@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from django.urls import reverse_lazy
 from pathlib import Path
 
@@ -21,14 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-04p70(u@k7q-2jmb*6z6r&xsazs=g-^ujp9t(#&m^5_mlwx&d%"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.environ.get("DEBUG")) == "1"
 
-ALLOWED_HOSTS = []
+if not DEBUG:
+    ALLOWED_HOSTS = ["*"]
 
-
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     "whisper",
     "followers",
     "activity",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -56,6 +60,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+MIDDLEWARE += "debug_toolbar.middleware.DebugToolbarMiddleware",
 
 ROOT_URLCONF = "whispers.urls"
 
@@ -86,11 +92,11 @@ WSGI_APPLICATION = "whispers.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": "127.0.0.1",
-        "USER": "postgres",
-        "NAME": "whispers",
-        "PORT": 5432,
-        "PASSWORD": "postgres",
+        "HOST": str(os.environ.get("DBHOST")),
+        "USER": str(os.environ.get("DBUSER")),
+        "NAME": str(os.environ.get("DBNAME")),
+        "PORT": int(os.environ.get("DBPORT")),
+        "PASSWORD": str(os.environ.get("DBPASS")),
     }
 }
 
@@ -133,6 +139,8 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 SITE_ID = 1
 

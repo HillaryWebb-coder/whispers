@@ -1,0 +1,1 @@
+web: gunicorn whispers.wsgi --log-file -

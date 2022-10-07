@@ -48,6 +48,7 @@
             {% endfor %}
         </section>
     </section>
+    {% if request.user == user_profile.user %}
     <section class="col-span-2 h-fit">
         <h1 class="font-bold text-2xl mb-5 col-span-5">Update Profile</h1>
         <form method="post" class="bg-white p-5" enctype="multipart/form-data">
@@ -57,5 +58,6 @@
                 class="px-4 py-2 bg-amber-600 border-2 border-amber-600 text-amber-100 block text-center rounded-sm">
         </form>
     </section>
+    {% endif %}
 </div>
 {% endblock content %}
