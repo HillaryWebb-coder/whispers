@@ -2,6 +2,7 @@ uploads
 .venv
 node_modules
 .migrations
+mydatabase
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
