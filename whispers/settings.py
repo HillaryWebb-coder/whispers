@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get("DEBUG")) == "1"
+DEBUG = bool(str(os.environ.get("DEBUG"))) or False
 
 if not DEBUG:
     ALLOWED_HOSTS = ["*"]
@@ -89,14 +89,21 @@ WSGI_APPLICATION = "whispers.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "HOST": str(os.environ.get("DBHOST")),
+#         "USER": str(os.environ.get("DBUSER")),
+#         "NAME": str(os.environ.get("DBNAME")),
+#         "PORT": int(os.environ.get("DBPORT")),
+#         "PASSWORD": str(os.environ.get("DBPASS")),
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": str(os.environ.get("DBHOST")),
-        "USER": str(os.environ.get("DBUSER")),
-        "NAME": str(os.environ.get("DBNAME")),
-        "PORT": int(os.environ.get("DBPORT")),
-        "PASSWORD": str(os.environ.get("DBPASS")),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
 
