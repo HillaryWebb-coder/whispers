@@ -1,0 +1,30 @@
+{% load like_filters %}
+
+<div class="bg-white border-2 p-5 rounded-md text-slate-800 flex flex-col gap-3 mb-4">
+        <div class="flex gap-3 items-center">
+                <h6 class="font-bold text-amber-700"><a
+                                href="{% url 'followers:user_profile' whisper.user.profile.slug %}">{{ whisper.user }}</a>
+                </h6>
+                <p class="text-xs italic text-slate-400">posted
+                        {{ whisper.created_at|timesince }} ago</p>
+        </div>
+        <p>{{ whisper.body }}</p>
+        {% whisper_likes whisper as whisper_likes %}
+        <div class="text-xs italic text-slate-400 flex items-center gap-x-2">
+                <form method="post" class="w-fit like-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="whisper_id" value="{{ whisper.id }}">
+                        {% user_liked_whisper request.user whisper_likes as user_liked %}
+                        <input type="hidden" name="liked" value="{% if user_liked %}0{% else %}1{% endif %}">
+                        <button type="submit">
+                                {% if not user_liked %}
+                                <i class="fa-regular fa-thumbs-up text-amber-500 text-lg w-fit"></i>
+                                {% else %}
+                                <i class="fa-solid fa-thumbs-up text-amber-500 text-lg w-fit"></i>
+                                {% endif %}
+                        </button>
+                </form>
+                <p><span id="likes-count">{{ whisper_likes.count }}</span>
+                        like{{ whisper_likes.count|pluralize }}<p>
+        </div>
+</div>

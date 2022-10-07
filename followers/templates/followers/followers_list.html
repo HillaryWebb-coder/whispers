@@ -1,0 +1,26 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Followers{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto grid grid-cols-5">
+    <h1 class="font-bold text-2xl mb-5 col-span-5">My Followers</h1>
+    <section class="bg-white p-3 col-span-3">
+        <div class="flex justify-between items-center">
+            {% if followers.count %}
+            {% for follower in followers %}
+            <div class="flex items-center gap-3">
+                <p>{{ follower.username }}</p>
+                <p class="text-xs text-slate-400 italic">| {{ follower.followers.count }}
+                    follower{{ follower.followers.count |pluralize }}</p>
+            </div>
+            <a href="{% url 'followers:user_profile' slug=follower.profile.slug %}"
+                class="border-2 border-amber-600 text-amber-100 bg-amber-600 px-5 py-2">View Profile</a>
+            {% endfor %}
+            {% else %}
+            <p class="text-slate-400">You have no followers yet</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock content %}

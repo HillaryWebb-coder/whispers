@@ -1,0 +1,38 @@
+{% extends 'layout/base.html' %}
+
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<main class=" container mx-auto">
+    <div class="grid grid-cols-4 gap-3">
+        <section class="col-span-3">
+            <h1 class="font-bold text-2xl mb-5">All Whispers</h1>
+            {% for whisper in whispers %}
+            {% include "inc/whisper.html" %}
+            {% endfor %}
+        </section>
+        <section class="col-span-1">
+            <h1 class="font-bold text-2xl mb-5">All Activity</h1>
+            {% include "activity/single_activity.html" %}
+        </section>
+    </div>
+    <div class="w-full border-y-2 border-slate-200 p-3 flex justify-center text-sm italic text-slate-500">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="hover:text-amber-500">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="hover:text-amber-500">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="hover:text-amber-500">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="hover:text-amber-500">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</main>
+{% endblock content %}

@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    form{
+        @apply py-4 flex flex-col gap-4
+    }
+    input, textarea, select {
+        @apply border-2 bg-slate-100 p-2 w-full mt-4 mb-6
+    }
+
+    input[type="checkbox"] {
+        @apply w-fit mx-2
+    }
+    
+    input[type="file"] {
+        @apply w-fit m-0 p-0 bg-transparent border-0 file:rounded-full file:bg-amber-300 file:text-amber-800 text-slate-600 file:border-0 file:py-2 file:px-4 file:mr-4 file:font-semibold
+    }
+
+    p.error {
+        @apply border-l-4 border-red-500 bg-red-100 text-red-700 w-full p-4 my-4
+    }
+
+    p.info {
+        @apply border-l-4 border-yellow-500 bg-yellow-100 text-yellow-700 w-full p-4 my-4
+    }
+
+    p.success {
+        @apply border-l-4 border-green-500 bg-green-100 text-green-700 w-full p-4 my-4
+    }
+    .errorlist {
+        @apply text-red-700 text-xs
+    }
+
+    .errorlist.nonfield {
+        @apply text-red-800 text-sm bg-red-400 rounded-md p-5 mb-5
+    }
+}

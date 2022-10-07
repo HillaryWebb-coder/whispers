@@ -1,0 +1,11 @@
+{% if activity %}
+
+{% for action in activity %}
+<div class="p-5 bg-white text-slate-800">
+    <p><a href="{{ action.target.get_absolute_url }}">{{ action.user }} {{ action.action }}</a></p>
+    <p class="text-slate-400 text-xs">{{ action.created|timesince }} ago</p>
+</div>
+{% endfor %}
+{% else %}
+<p class="italic text-slate-400 bg-white p-5">No activity to show</p>
+{% endif %}

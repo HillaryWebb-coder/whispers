@@ -1,0 +1,21 @@
+{% extends "layout/base.html" %}
+{% load account %}
+{% user_display user %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+<section class="container mx-auto">
+    <h1 class="text-3xl font-bold text-center m-5">Login</h1>
+    <div class="grid items-center justify-center">
+        <form method="post" class="bg-white p-12 inline-block max-w-lg">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Login" class="px-4 py-2 bg-amber-600 border-2 border-amber-600 text-amber-100">
+            <p class="text-slate-400 italic">
+                Don't have an account? <a href="{% url 'account_signup' %}"
+                    class="text-amber-800 hover:text-amber-400 ">register</a>
+            </p>
+        </form>
+
+    </div>
+</section>
+{% endblock content %}

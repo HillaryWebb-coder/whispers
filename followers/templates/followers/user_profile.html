@@ -1,0 +1,61 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}{{ user_profile.user.username }}'s Profile{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto grid grid-cols-5 gap-3">
+    <section class="col-span-3">
+        <h1 class="font-bold text-2xl mb-5 col-span-5">{{ user_profile.user.username }}'s Profile</h1>
+        <div class="bg-white grid grid-cols-3 p-8">
+            <div class="col-span-1">
+                <img src="{% if user_profile.avatar %}{{ user_profile.avatar.url }} {% else %} {% static 'img/no_image.jpg' %}{% endif %} "
+                    alt="{{ user_profile.user.username }}" class="rounded-full">
+            </div>
+            <div class="col-span-2 mt-8 ml-4">
+                <h1 class="font-light text-3xl" id="username">{{ user_profile.user.username }}</h1>
+                <div class="flex flex-row mt-2 gap-x-2">
+                    <p class="text-slate-400 italic text-sm"><span
+                            id="followers-count">{{ user_profile.user.followers.count }}</span>
+                        follower{{ user_profile.user.followers.count|pluralize }}</p>
+                    <p class="text-slate-400 italic text-sm">{{ user_profile.user.following.count }}
+                        following{{ user_profile.user.following.count|pluralize }}</p>
+                </div>
+                {% if not user_profile.user == request.user %}
+                <form method="post" id="follow_user_form">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_to" value="{{ user_profile.user.id }}" id="user_to">
+                    <input type="hidden" name="user_action"
+                        value="{% if request.user in user_profile.user.followers.all %}unfollow{% else %}follow{% endif %}"
+                        id="user_action">
+                    <input type="submit" id="follow_submit"
+                        value="{% if request.user in user_profile.user.followers.all %}Unfollow{% else %}Follow User {% endif %}"
+                        class="px-4 py-2 bg-amber-600 border-2 border-amber-600 text-amber-100">
+                </form>
+                {% else %}
+                <div class="w-full mt-3">
+                    <a href="{% url 'whisper:whisper_create' %}"
+                        class="px-4 py-2 bg-amber-600 border-2 border-amber-600 text-amber-100 block text-center">New
+                        Post</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <section class="p-3">
+            <h2 class="font-bold text-2xl my-5">{{ user_profile.user.username }}'s Whispers</h2>
+            {% for whisper in user_whispers %}
+            {% include "inc/whisper.html" %}
+            {% endfor %}
+        </section>
+    </section>
+    <section class="col-span-2 h-fit">
+        <h1 class="font-bold text-2xl mb-5 col-span-5">Update Profile</h1>
+        <form method="post" class="bg-white p-5" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Update Profile"
+                class="px-4 py-2 bg-amber-600 border-2 border-amber-600 text-amber-100 block text-center rounded-sm">
+        </form>
+    </section>
+</div>
+{% endblock content %}
